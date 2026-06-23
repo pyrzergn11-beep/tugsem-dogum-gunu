@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tuğsem İçin Sürpriz</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      background: radial-gradient(circle at top, #ff7ac8, #7c3aed, #111827);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      color: white;
+      animation: blink 2s infinite alternate;
+      opacity: 0.7;
+    }
+
+    .box {
+      width: 90%;
+      max-width: 500px;
+      padding: 35px 25px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.16);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 0 55px rgba(255,255,255,0.35);
+      position: relative;
+      z-index: 5;
+      animation: cardIn 1.2s ease;
+    }
+
+    .gift {
+      font-size: 85px;
+      cursor: pointer;
+      animation: giftShake 1.4s infinite;
+    }
+
+    h2 {
+      font-weight: normal;
+      opacity: 0.9;
+    }
+
+    h1 {
+      font-size: 45px;
+      margin: 15px 0;
+      animation: neon 1.4s infinite alternate;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 16px 34px;
+      border: none;
+      border-radius: 35px;
+      background: white;
+      color: #7c3aed;
+      font-size: 19px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+    }
+
+    #countdown {
+      display: none;
+      font-size: 70px;
+      font-weight: bold;
+      margin-top: 25px;
+      animation: pop 0.8s ease;
+    }
+
+    #mesaj {
+      display: none;
+      margin-top: 25px;
+      font-size: 21px;
+      line-height: 1.5;
+      animation: messageIn 1s ease;
+    }
+
+    #muzikYazi {
+      display: none;
+      margin-top: 12px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .altYazi {
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .balon, .kalp, .konfeti {
+      position: absolute;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .balon {
+      bottom: -80px;
+      font-size: 45px;
+      animation: balloonUp 9s linear infinite;
+    }
+
+    .kalp {
+      bottom: -40px;
+      font-size: 27px;
+      animation: heartUp 5s linear forwards;
+    }
+
+    .konfeti {
+      top: -30px;
+      font-size: 22px;
+      animation: confettiDown 3s linear forwards;
+    }
+
+    .flash {
+      animation: flash 0.8s ease;
+    }
+
+    @keyframes cardIn {
+      from { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+      to { transform: scale(1) rotate(0); opacity: 1; }
+    }
+
+    @keyframes neon {
+      from {
+        text-shadow: 0 0 10px white, 0 0 20px #ff4fa3;
+      }
+      to {
+        text-shadow: 0 0 20px white, 0 0 40px #fff700, 0 0 70px #ff69b4;
+      }
+    }
+
+    @keyframes giftShake {
+      0% { transform: rotate(0deg) scale(1); }
+      20% { transform: rotate(8deg) scale(1.05); }
+      40% { transform: rotate(-8deg) scale(1.05); }
+      60% { transform: rotate(5deg) scale(1.05); }
+      80% { transform: rotate(-5deg) scale(1.05); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    @keyframes messageIn {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.3); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes balloonUp {
+      from { transform: translateY(0); opacity: 0.9; }
+      to { transform: translateY(-120vh); opacity: 0; }
+    }
+
+    @keyframes heartUp {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-110vh); opacity: 0; }
+    }
+
+    @keyframes confettiDown {
+      from { transform: translateY(0) rotate(0deg); opacity: 1; }
+      to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes blink {
+      from { opacity: 0.25; transform: scale(1); }
+      to { opacity: 1; transform: scale(1.7); }
+    }
+
+    @keyframes flash {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(2); }
+      100% { filter: brightness(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <audio id="muzik" src="nastelbom-happy-birthday-469282.mp3"></audio>
+
+  <div class="stars" id="stars"></div>
+
+  <div class="box">
+    <div class="gift">🎁</div>
+
+    <h2>Tuğsem için özel bir sürpriz...</h2>
+    <h1>İyi ki doğdun Tuğsem! 🎂</h1>
+
+    <button onclick="surpriz()">Sürprizi Aç</button>
+
+    <div id="countdown">3</div>
+    <div id="muzikYazi">🎵 Müzik başladı...</div>
+
+    <p id="mesaj">
+      Bugün senin günün! 🥳
+      <br><br>
+      Yeni yaşın sana bol mutluluk, şans ve güzel anılar getirsin.
+      <br><br>
+      Nice mutlu yaşlara Tuğsem 💖
+    </p>
+
+    <div class="altYazi">Bu site sadece senin için yapıldı ✨</div>
+  </div>
+
+  <script>
+    let basladi = false;
+
+    function surpriz() {
+      if (basladi) return;
+      basladi = true;
+
+      let muzik = document.getElementById("muzik");
+      muzik.volume = 0.7;
+      muzik.play();
+
+      document.body.classList.add("flash");
+      setTimeout(() => {
+        document.body.classList.remove("flash");
+      }, 800);
+
+      let sayac = document.getElementById("countdown");
+      sayac.style.display = "block";
+
+      let sayi = 3;
+      sayac.innerHTML = sayi;
+
+      let timer = setInterval(() => {
+        sayi--;
+
+        if (sayi > 0) {
+          sayac.innerHTML = sayi;
+        } else {
+          clearInterval(timer);
+          sayac.innerHTML = "🎁";
+          acilis();
+        }
+      }, 1000);
+    }
+
+    function acilis() {
+      document.querySelector(".gift").innerHTML = "🎉";
+      document.getElementById("muzikYazi").style.display = "block";
+      document.getElementById("mesaj").style.display = "block";
+
+      for (let i = 0; i < 100; i++) {
+        let konfeti = document.createElement("div");
+        konfeti.className = "konfeti";
+        konfeti.innerHTML = ["🎉", "🎊", "✨", "💖"][Math.floor(Math.random() * 4)];
+        konfeti.style.left = Math.random() * 100 + "vw";
+        konfeti.style.animationDuration = (2 + Math.random() * 2) + "s";
+        document.body.appendChild(konfeti);
+        setTimeout(() => konfeti.remove(), 5000);
+      }
+
+      for (let i = 0; i < 45; i++) {
+        let kalp = document.createElement("div");
+        kalp.className = "kalp";
+        kalp.innerHTML = ["💖", "💗", "💕", "💞"][Math.floor(Math.random() * 4)];
+        kalp.style.left = Math.random() * 100 + "vw";
+        kalp.style.fontSize = (20 + Math.random() * 28) + "px";
+        kalp.style.animationDuration = (3 + Math.random() * 3) + "s";
+        document.body.appendChild(kalp);
+        setTimeout(() => kalp.remove(), 7000);
+      }
+    }
+
+    setInterval(() => {
+      let balon = document.createElement("div");
+      balon.className = "balon";
+      balon.innerHTML = ["🎈", "💗", "🌸"][Math.floor(Math.random() * 3)];
+      balon.style.left = Math.random() * 100 + "vw";
+      balon.style.animationDuration = (7 + Math.random() * 5) + "s";
+      document.body.appendChild(balon);
+      setTimeout(() => balon.remove(), 12000);
+    }, 900);
+
+    for (let i = 0; i < 45; i++) {
+      let star = document.createElement("div");
+      star.className = "star";
+      star.innerHTML = "✨";
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.top = Math.random() * 100 + "vh";
+      star.style.fontSize = (10 + Math.random() * 14) + "px";
+      star.style.animationDelay = Math.random() * 2 + "s";
+      document.getElementById("stars").appendChild(star);
+    }
+  </script>
+
+</body>
+</html>
